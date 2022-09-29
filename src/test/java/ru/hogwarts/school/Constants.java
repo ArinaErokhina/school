@@ -11,7 +11,7 @@ public class Constants {
     public static final int AGESTUDENT2 = 12;
     public static final long IDSTUDENT3 = 3;
     public static final String NAMESTUDENT3 = "student2";
-    public static final int AGESTUDENT3 = 23;
+    public static final int AGESTUDENT3 = 12;
 
     public static final long IDFACULTY1 = 1;
     public static final String NAMEFACULTY1 = "faculty";

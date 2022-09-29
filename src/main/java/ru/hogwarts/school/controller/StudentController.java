@@ -59,4 +59,14 @@ public class StudentController {
         }
         return ResponseEntity.notFound().build();
     }
+
+    @GetMapping("age_range")
+    public ResponseEntity<Collection<Student>> findStudentsByAgeRange(@RequestParam("min") int min, @RequestParam("max") int max){
+        return ResponseEntity.ok(studentService.findByAgeRange(min, max));
+    }
+
+    @GetMapping("faculty")
+    public ResponseEntity<Collection<Student>> findStudentsByFaculty(@RequestParam("id") Long id){
+        return ResponseEntity.ok(studentService.findByFaculty(id));
+    }
 }

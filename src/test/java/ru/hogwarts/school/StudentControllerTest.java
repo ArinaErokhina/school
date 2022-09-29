@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repositories.StudentRepository;
@@ -13,6 +14,8 @@ import ru.hogwarts.school.service.StudentService;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 
 import static ru.hogwarts.school.Constants.*;
 
@@ -27,43 +30,73 @@ public class StudentControllerTest {
     private Student student2;
     private Student student3;
 
+    private List<Student> students = new ArrayList<>();
     @BeforeEach
     public void setUp(){
         studentService = new StudentService(studentRepository);
         student1 = new Student(IDSTUDENT1, NAMESTUDENT1, AGESTUDENT1);
         student2 = new Student(IDSTUDENT2, NAMESTUDENT2, AGESTUDENT2);
         student3 = new Student(IDSTUDENT3, NAMESTUDENT3, AGESTUDENT3);
+        students.add(student1);
+        students.add(student2);
+        students.add(student3);
     }
 
     @Test
     public void getStudentTest(){
-        studentService.addStudent(student2);
-        Assertions.assertEquals(student2, studentService.findStudent(student2.getId()));
+        Mockito.when(studentRepository.findById(student1.getId())).thenReturn(Optional.ofNullable(student1));
+        Assertions.assertEquals(student1, studentService.findStudent(student1.getId()));
     }
 
     @Test
     public void createStudentTest(){
-        Assertions.assertEquals(student1, studentService.addStudent(student1));
+        Mockito.when(studentRepository.save(student2)).thenReturn(student2);
+        Assertions.assertEquals(student2, studentService.addStudent(student2));
     }
 
     @Test
     public void editStudentTest(){
         Student editedStudent = new Student(IDSTUDENT1, NAMESTUDENT1, AGESTUDENT3);
-        studentService.addStudent(student1);
+        Mockito.when(studentRepository.save(editedStudent)).thenReturn(editedStudent);
         Assertions.assertEquals(editedStudent, studentService.editStudents(editedStudent));
     }
 
     @Test
     public void deleteStudentTest(){
-        studentService.addStudent(student2);
-       // Assertions.assertEquals(student2, studentService.removeStudent(student2.getId()));
+        studentRepository.deleteById(student3.getId());
+        Mockito.verify(studentRepository, Mockito.times(1)).deleteById(student3.getId());
+    }
+
+    @Test
+    public void getAllStudentTest(){
+        Mockito.when(studentRepository.findAll()).thenReturn(students);
+        Assertions.assertEquals(students, studentService.allStudent());
     }
 
     @Test
     public void findByAgeTest(){
-        Collection<Student> actual = studentService.findByAge(12);
         ArrayList<Student> expected =new ArrayList<>();
         expected.add(student2);
-        Assertions.assertTrue(expected.containsAll(actual));
+        expected.add(student3);
+        Mockito.when(studentRepository.findStudentByAge(12)).thenReturn(expected);
+        Assertions.assertEquals(expected, studentService.findByAge(12));
+    }
+
+    @Test
+    public void findStudentsByAgeRangeTest(){
+        ArrayList<Student> expected =new ArrayList<>();
+        expected.add(student2);
+        expected.add(student3);
+        Mockito.when(studentRepository.findByAgeBetween(12,20)).thenReturn(expected);
+        Assertions.assertEquals(expected, studentService.findByAgeRange(12,20));
+    }
+
+    @Test
+    public void findStudentsByFaculty(){
+        ArrayList<Student> expected =new ArrayList<>();
+        expected.add(student2);
+        expected.add(student3);
+        Mockito.when(studentRepository.findStudentsByFaculty(3L)).thenReturn(expected);
+        Assertions.assertEquals(expected, studentService.findByFaculty(3L));
     }
 }
