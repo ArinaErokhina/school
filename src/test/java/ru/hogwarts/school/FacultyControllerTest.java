@@ -3,6 +3,10 @@ package ru.hogwarts.school;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.repositories.FacultyRepository;
 import ru.hogwarts.school.service.FacultyService;
@@ -12,9 +16,12 @@ import java.util.Collection;
 
 import static ru.hogwarts.school.Constants.*;
 
+@ExtendWith(MockitoExtension.class)
 public class FacultyControllerTest {
 
+    @InjectMocks
     private FacultyService facultyService;
+    @Mock
     private FacultyRepository facultyRepository;
     private Faculty faculty1;
     private Faculty faculty2;
@@ -49,7 +56,7 @@ public class FacultyControllerTest {
     @Test
     public void deleteFacultyTest(){
         facultyService.addFaculty(faculty3);
-        //Assertions.assertEquals(faculty3, facultyService.removeFaculty(faculty3.getId()));
+        //Assertions.assertTrue(facultyService.removeFaculty(faculty3.getId()));
     }
 
     @Test

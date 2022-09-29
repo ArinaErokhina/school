@@ -11,7 +11,7 @@ import java.util.Objects;
 @Service
 public class FacultyService {
 
-    private FacultyRepository facultyRepository;
+    private final FacultyRepository facultyRepository;
 
     public FacultyService(FacultyRepository facultyRepository) {
         this.facultyRepository = facultyRepository;
@@ -26,7 +26,7 @@ public class FacultyService {
     }
 
     public Faculty findFaculty(long id) {
-        return facultyRepository.findById(id).get();
+        return facultyRepository.findById(id).orElse(null);
     }
 
     public void removeFaculty(long id) {
@@ -38,14 +38,7 @@ public class FacultyService {
     }
 
     public Collection<Faculty> findColor(String color) {
-        Collection<Faculty> faculties = facultyRepository.findAll();
-        ArrayList<Faculty> result = new ArrayList<>();
-        for (Faculty faculty : faculties) {
-            if (Objects.equals(faculty.getColor(), color)) {
-                result.add(faculty);
-            }
-        }
-        return result;
+        return facultyRepository.findFacultiesByColor(color);
     }
 
 }

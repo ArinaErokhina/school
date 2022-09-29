@@ -3,6 +3,10 @@ package ru.hogwarts.school;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repositories.StudentRepository;
 import ru.hogwarts.school.service.StudentService;
@@ -12,9 +16,12 @@ import java.util.Collection;
 
 import static ru.hogwarts.school.Constants.*;
 
+@ExtendWith(MockitoExtension.class)
 public class StudentControllerTest {
 
+    @InjectMocks
     private StudentService studentService;
+    @Mock
     private StudentRepository studentRepository;
     private Student student1;
     private Student student2;
