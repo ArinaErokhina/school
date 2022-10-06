@@ -91,12 +91,4 @@ public class StudentControllerTest {
         Assertions.assertEquals(expected, studentService.findByAgeRange(12,20));
     }
 
-    @Test
-    public void findStudentsByFaculty(){
-        ArrayList<Student> expected =new ArrayList<>();
-        expected.add(student2);
-        expected.add(student3);
-        Mockito.when(studentRepository.findStudentsByFaculty(3L)).thenReturn(expected);
-        Assertions.assertEquals(expected, studentService.findByFaculty(3L));
-    }
 }

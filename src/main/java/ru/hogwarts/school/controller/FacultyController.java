@@ -3,6 +3,7 @@ package ru.hogwarts.school.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Faculty;
+import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.FacultyService;
 
 import java.util.Collection;
@@ -51,22 +52,22 @@ public class FacultyController {
     }
 
     @GetMapping
-    public ResponseEntity<Collection<Faculty>> getAllFaculties(){
+    public ResponseEntity<Collection<Faculty>> getAllFaculties() {
         return ResponseEntity.ok(facultyService.allFaculties());
     }
 
     @GetMapping("color")
     public ResponseEntity<Collection<Faculty>> findFaculties(@RequestParam("color") String color) {
-            return ResponseEntity.ok(facultyService.findColor(color));
+        return ResponseEntity.ok(facultyService.findColor(color));
     }
 
     @GetMapping("color_or_name")
-    public ResponseEntity<Collection<Faculty>> findFacultiesByNameOrColor(@RequestParam("nameOrColor") String nameOrColor){
+    public ResponseEntity<Collection<Faculty>> findFacultiesByNameOrColor(@RequestParam("nameOrColor") String nameOrColor) {
         return ResponseEntity.ok(facultyService.findFacultiesByColorOrName(nameOrColor));
     }
 
-    @GetMapping("/{id}/faculty")
-    public ResponseEntity<Faculty> findFacultyByStudent(@PathVariable long id){
+    @GetMapping("students_faculty/{id}")
+    public ResponseEntity<Collection<Student>> findFacultyByStudent(@PathVariable long id) {
         return ResponseEntity.ok(facultyService.findFacultyByStudent(id));
     }
 }
