@@ -83,6 +83,6 @@ public class FacultyControllerTest {
     public void findFacultiesByNameOrColorTest(){
         List<Faculty> expected = new ArrayList<>(Arrays.asList(faculty3, faculty2));
         Mockito.when(facultyRepository.findFacultyByNameContainsIgnoreCaseOrColorContainsIgnoreCase(null, faculty2.getColor())).thenReturn(expected);
-        Assertions.assertEquals(expected, facultyService.findFacultiesByColorOrName(null, COLORFACULTY2));
+        Assertions.assertEquals(expected, facultyService.findFacultiesByColorOrName(COLORFACULTY2));
     }
 }

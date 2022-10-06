@@ -61,11 +61,12 @@ public class FacultyController {
     }
 
     @GetMapping("color_or_name")
-    public ResponseEntity<Collection<Faculty>> findFacultiesByNameOrColor(@RequestParam(required = false) String name,
-                                                                          @RequestParam(required = false) String color){
-        if (name == null && color == null){
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(facultyService.findFacultiesByColorOrName(name, color));
+    public ResponseEntity<Collection<Faculty>> findFacultiesByNameOrColor(@RequestParam("nameOrColor") String nameOrColor){
+        return ResponseEntity.ok(facultyService.findFacultiesByColorOrName(nameOrColor));
+    }
+
+    @GetMapping("/{id}/faculty")
+    public ResponseEntity<Faculty> findFacultyByStudent(@PathVariable long id){
+        return ResponseEntity.ok(facultyService.findFacultyByStudent(id));
     }
 }
