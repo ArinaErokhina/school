@@ -5,9 +5,7 @@ import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repositories.FacultyRepository;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Objects;
 
 @Service
 public class FacultyService {

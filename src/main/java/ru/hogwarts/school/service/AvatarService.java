@@ -1,7 +1,11 @@
 package ru.hogwarts.school.service;
 
 import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.hogwarts.school.model.Avatar;
@@ -15,6 +19,7 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collection;
 
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
@@ -27,6 +32,7 @@ public class AvatarService {
 
     private final StudentService studentService;
     private final AvatarRepository avatarRepository;
+    Logger logger = LoggerFactory.getLogger(AvatarService.class);
 
 
     public AvatarService(StudentService studentService, AvatarRepository avatarRepository) {
@@ -83,5 +89,16 @@ public class AvatarService {
             return baos.toByteArray();
         }
 
+    }
+
+    public ResponseEntity<Collection<Avatar>> getAll(Integer pageNumber, Integer pageSize){
+        logger.info("Метод вызван");
+        PageRequest pageRequest = PageRequest.of(pageNumber-1, pageSize);
+        Collection<Avatar> avatarsList = avatarRepository.findAll(pageRequest).getContent();
+        if (avatarsList.isEmpty()){
+            logger.error("Аватар не найден");
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(avatarsList);
     }
 }
