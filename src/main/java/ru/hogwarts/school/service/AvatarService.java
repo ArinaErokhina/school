@@ -41,6 +41,7 @@ public class AvatarService {
     }
 
     public void uploadAvatar(Long studentId, MultipartFile file) throws IOException {
+        logger.debug("The method uploadAvatar is called");
         Student student = studentService.findStudent(studentId);
 
         Path filePath = Path.of(coversDir, studentId + "." + getExtension(file.getOriginalFilename()));
@@ -71,6 +72,7 @@ public class AvatarService {
     }
 
     public Avatar findAvatar(Long studentId) {
+        logger.debug("The method findAvatar is called");
         return avatarRepository.findByStudentId(studentId).orElse(new Avatar());
     }
 
@@ -92,11 +94,11 @@ public class AvatarService {
     }
 
     public ResponseEntity<Collection<Avatar>> getAll(Integer pageNumber, Integer pageSize){
-        logger.info("Метод вызван");
+        logger.debug("The method getAll is called");
         PageRequest pageRequest = PageRequest.of(pageNumber-1, pageSize);
         Collection<Avatar> avatarsList = avatarRepository.findAll(pageRequest).getContent();
         if (avatarsList.isEmpty()){
-            logger.error("Аватар не найден");
+            logger.error("Avatar not found");
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(avatarsList);
