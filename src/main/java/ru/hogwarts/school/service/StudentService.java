@@ -9,16 +9,17 @@ import ru.hogwarts.school.repositories.StudentRepository;
 
 import java.util.Collection;
 import java.util.*;
+import java.util.stream.Collectors;
+
 @Service
 public class StudentService {
 
     private final StudentRepository studentRepository;
-    Logger logger = LoggerFactory.getLogger(StudentService.class);
+    private final Logger logger = LoggerFactory.getLogger(StudentService.class);
 
     public StudentService(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
     }
-
 
 
     public Student addStudent(Student student) {
@@ -41,7 +42,7 @@ public class StudentService {
         studentRepository.deleteById(id);
     }
 
-    public Collection<Student> allStudent(){
+    public Collection<Student> allStudent() {
         logger.debug("The method allStudent is called");
         return studentRepository.findAll();
     }
@@ -51,32 +52,56 @@ public class StudentService {
         return studentRepository.findStudentByAge(age);
     }
 
-    public Collection<Student> findByAgeRange(int min, int max){
+    public Collection<Student> findByAgeRange(int min, int max) {
         logger.debug("The method findByAgeRange is called");
         return studentRepository.findByAgeBetween(min, max);
     }
 
-    public Faculty findStudentsFaculty(Long id){
+    public Faculty findStudentsFaculty(Long id) {
         logger.debug("The method findStudentsFaculty is called");
-       Student student = studentRepository.findById(id).get();
-       if (student != null){
-           return student.getFaculty();
-       }
-       return null;
+        Student student = studentRepository.findById(id).get();
+        if (student != null) {
+            return student.getFaculty();
+        }
+        return null;
     }
 
-    public Long getAmountStudents(){
+    public Long getAmountStudents() {
         logger.debug("The method getAmountStudents is called");
         return studentRepository.getAmountAllStudents();
     }
 
-    public Double averageAge(){
+    public Double averageAge() {
         logger.debug("The method averageAge is called");
         return studentRepository.getAverageAgeAllStudent();
     }
 
-    public List<Student> getLastFiveStudents(){
+    public List<Student> getLastFiveStudents() {
         logger.debug("The method getLastFiveStudents is called");
         return studentRepository.getLastFiveStudents();
     }
+
+    public List<String> getStudentByLetter(String letter) {
+        logger.debug("The method getStudentByLetter is called");
+        List<String> studentByLetter =
+                studentRepository.findAll().stream()
+                        .map(student -> student.getName())
+                        .filter(s -> s.startsWith(letter))
+                        .sorted((s1, s2) -> s1.compareTo(s2))
+                        .map(s -> s.toUpperCase())
+                        .collect(Collectors.toList());
+
+        return studentByLetter;
+    }
+
+    public OptionalDouble getAverageAge(){
+        logger.debug("The method getAverageAge is called");
+        OptionalDouble averageAge =
+                studentRepository.findAll().stream()
+                        .mapToDouble(student -> student.getAge())
+                        .average();
+
+        return averageAge;
+    }
+
 }
