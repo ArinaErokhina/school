@@ -106,25 +106,8 @@ public class StudentService {
         return averageAge;
     }
 
-    public void findStudentThread() {
-        logger.debug("The method findStudentThread is called");
-        doOperation(10);
-        doOperation(8);
-
-        new Thread(() -> {
-            doOperation(4);
-            doOperation(6);
-        }).start();
-
-        new Thread(() -> {
-            doOperation(2);
-            doOperation(9);
-        }).start();
-    }
-
     public void findStudentThread1() {
-        logger.debug("The method findStudentThread1 is called");
-
+        logger.debug("The method findStudentThread is called");
         doOperation1(10);
         doOperation1(8);
 
@@ -139,12 +122,29 @@ public class StudentService {
         }).start();
     }
 
-    public void doOperation(long id) {
+    public void findStudentThread2() {
+        logger.debug("The method findStudentThread1 is called");
+
+        doOperation2(10);
+        doOperation2(8);
+
+        new Thread(() -> {
+            doOperation2(4);
+            doOperation2(6);
+        }).start();
+
+        new Thread(() -> {
+            doOperation2(2);
+            doOperation2(9);
+        }).start();
+    }
+
+    public void doOperation1(long id) {
         Student findStudent = studentRepository.findById(id).orElse(null);
         System.out.println("Student " + findStudent);
     }
 
-    public void doOperation1(long id) {
+    public void doOperation2(long id) {
         synchronized (flag) {
             Student findStudent = studentRepository.findById(id).orElse(null);
             System.out.println("Student " + findStudent);

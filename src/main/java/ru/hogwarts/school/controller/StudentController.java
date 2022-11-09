@@ -96,13 +96,13 @@ public class StudentController {
         return ResponseEntity.ok(studentService.getAverageAge());
     }
 
-    @GetMapping("student_thread")
+    @GetMapping("student_thread1")
     public void findStudentThread(){
-        studentService.findStudentThread();
+        studentService.findStudentThread1();
     }
 
-    @GetMapping("student_thread1")
-    public void findStudentThread1(){
+    @GetMapping("student_thread2")
+    public void findStudentThread2(){
         studentService.findStudentThread1();
     }
 }
